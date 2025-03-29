@@ -14,14 +14,14 @@ const initialState = {
 }
 
 //------------------------------------------------------
-//fetch() does not throw an error for HTTP errors like 404 or 500. It resolves the promise successfully as long as the network request itself was made. So, you need manually check the HTTP response status 
+//fetch() does not throw an error for HTTP errors like 404 or 500. It resolves the promise successfully as long as the network request itself was made. So, you need manually check the HTTP response status when fetch() is used 
 
 // export const getCartItems = createAsyncThunk('cart/getCartItems', () => {
 //   return fetch(url).then((response) => response.json()).catch((error) => console.log(error)) 
 //   })
 //-------------------------------------------------------
 
-//use axios to fetch 404 response, access data with response.data
+//use axios instead, it respondes with 404 response, access data with response.data
 //payload must be the first param even if unused, second param thukAPI
 export const getCartItems = createAsyncThunk('cart/getCartItems', async(payload, thunkAPI)=> {
   try {

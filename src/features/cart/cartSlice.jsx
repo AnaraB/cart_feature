@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import cartItems from '../../cartItems';
+//import cartItems from '../../cartItems';
+import axios from 'axios';
+import { openModal } from '../modal/modalSlice';
 
 const url = 'https://www.course-api.com/react-useReducer-cart-project';
 
@@ -11,9 +13,28 @@ const initialState = {
 
 }
 
-export const getCartItems = createAsyncThunk('cart/getCartItems', () => {
-  return fetch(url).then((response) => response.json()).catch((error) => console.log(error)) 
-  })
+//------------------------------------------------------
+//fetch() does not throw an error for HTTP errors like 404 or 500. It resolves the promise successfully as long as the network request itself was made. So, you need manually check the HTTP response status 
+
+// export const getCartItems = createAsyncThunk('cart/getCartItems', () => {
+//   return fetch(url).then((response) => response.json()).catch((error) => console.log(error)) 
+//   })
+//-------------------------------------------------------
+
+//use axios to fetch 404 response, access data with response.data
+//payload must be the first param even if unused, second param thukAPI
+export const getCartItems = createAsyncThunk('cart/getCartItems', async(payload, thunkAPI)=> {
+  try {
+  //console.log(thunkAPI);
+  //console.log(thunkAPI.getState())
+  //thunkAPI.dispatch(openModal());
+  const response = await axios(url);
+  return response.data
+  }catch(error) {
+   return thunkAPI.rejectWithValue('something went wrong');
+  }
+})
+
 const cartSlice = createSlice({
   name: 'cart',
   initialState,
@@ -55,12 +76,12 @@ const cartSlice = createSlice({
       state.isLoading = true;
     })
     .addCase(getCartItems.fulfilled, (state, action) => {
-      console.log(action)
+      //console.log(action)
       state.isLoading = false;
       state.cartItems = action.payload;
     })
     .addCase(getCartItems.rejected, (state, action) => {
-      console.log(action)
+     //console.log(action)
       state.isLoading = false;
     });
   },

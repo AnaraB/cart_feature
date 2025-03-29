@@ -12,9 +12,16 @@ const initialState = {
 
 const cartSlice = createSlice({
   name: 'cart',
-  initialState
+  initialState,
+  reducers: {
+    clearCart:(state)=>{
+      //mutate the state directly, immer library will take care of that
+      state.cartItems = [];
+    },
+  },
 })
 
 //console.log(cartSlice);
+export const {clearCart} = cartSlice.actions;
 
 export default cartSlice.reducer;

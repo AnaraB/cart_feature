@@ -15,13 +15,23 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     clearCart:(state)=>{
-      //mutate the state directly, immer library will take care of that
+      //mutate the state directly, immer library will do that behind the scene
       state.cartItems = [];
     },
+    removeItem: (state, action)=> {
+      //console.log(action);
+      const itemId = action.payload
+     state.cartItems = state.cartItems.filter((item) => item.id !== itemId);
+    },
+   //destructure payoload and pass it in as an argument
+   increase: (state, { payload }) => {
+    const cartItem = state.cartItems.find((item) => item.id === payload.id);
+    cartItem.amount = cartItem.amount + 1;
+   }
   },
 })
 
 //console.log(cartSlice);
-export const {clearCart} = cartSlice.actions;
+export const {clearCart, removeItem} = cartSlice.actions;
 
 export default cartSlice.reducer;

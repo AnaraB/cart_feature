@@ -8,6 +8,7 @@ import { useEffect } from 'react';
 function App() {
   const dispatch = useDispatch();
   const {cartItems} = useSelector((store) => store.cart)
+  const {isOpen} = useSelector((store) => store.modal)
   
   //invoke useEffect every time there is a change in cartItems array
   useEffect(()=> {
@@ -18,7 +19,7 @@ function App() {
     <main>
        <Navbar/>
        <CartContainer/>
-       <Modal />
+       {isOpen && <Modal />}
     </main>
 
   )
